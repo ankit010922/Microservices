@@ -1,0 +1,85 @@
+server:
+  port: 8070
+spring:
+  application:
+    name: dish-api-gateway
+  cloud:
+    gateway:
+      httpclient:
+        response-timeout: 10000
+        connect-timeout: 10000
+      routes:
+        - id: dish-auth-service
+          uri: lb://dish-auth-service
+          predicates:
+            - Path=/dish/auth-service/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: authServiceCircuitBreaker
+                fallbackUri: forward:/fallback/auth-service
+        - id: dish-user-service
+          uri: lb://dish-user-service
+          predicates:
+            - Path=/dish/user-service/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: userServiceCircuitBreaker
+                fallbackUri: forward:/fallback/user-service
+                requestTimeout: 10000
+        - id: dish-roles-service
+          uri: lb://dish-roles-service
+          predicates:
+              - Path=/dish/roles-service/**
+          filters:
+           - name: CircuitBreaker
+             args:
+               name: roleServiceCircuitBreaker
+               fallbackUri: forward:/fallback/roles-service
+               requestTimeout: 10000
+      globalcors:
+        corsConfigurations:
+          '[/**]':
+            allowedOrigins: "*" # Allow all origins
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*" # Allow all headers
+            maxAge: 3600 # Max age for the options requests
+
+# Eureka Configuration
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info,metrics
+
+  security:
+   oauth2:
+     resourceserver:
+        jwt:
+          issuer-uri: http://10.10.19.200:35001/realms/artisan-realm
+jwt:
+  signing:
+    key: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAxwrEEkm1a0RCMsk/0YSnFuNE+ujcv8KlMlopxuUt1DokIxH5EQQccG1k0oFLp9NoYFGSLihLd7Ti7hib0P1DOOjNZVPXIM20fll/fYCp//kOyyqCKdHiygLgeIRBKmUK/vVPGV+WPdYS7bfU7ooJrVG+dnL6gvlH6vVXlxoxHBUJBYRSG6lLI+SAP2E2xPJR11k5RCOGhMuG+v5KcBDJcw3wpZC3NUyq95bfuzopXXgrA44ZHYBrLXkaaAnBuzEngxl9jWBmE3aX5Mdnykao/tcnSq8ziYsiTVfoAv0Td5oNKHPO+yl7//ZnaG5hmfiDhb0DgOrsrqWAaqTNGBC9YwIDAQAB
+
+# Resilience4j Configuration
+resilience4j:
+  CircuitBreaker:
+    configs:
+      default:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 5000

@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: "dish-roles-service"
+  profiles:
+    active: "qa"
+  config:
+    uri: http://localhost:8085/
+    name: CONFIG-SERVER
