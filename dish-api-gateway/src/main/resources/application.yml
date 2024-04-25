@@ -5,9 +5,6 @@ spring:
     name: dish-api-gateway
   cloud:
     gateway:
-      httpclient:
-        response-timeout: 10000
-        connect-timeout: 10000
       routes:
         - id: dish-auth-service
           uri: lb://dish-auth-service
@@ -27,7 +24,6 @@ spring:
               args:
                 name: userServiceCircuitBreaker
                 fallbackUri: forward:/fallback/user-service
-                requestTimeout: 10000
         - id: dish-roles-service
           uri: lb://dish-roles-service
           predicates:
@@ -37,7 +33,6 @@ spring:
              args:
                name: roleServiceCircuitBreaker
                fallbackUri: forward:/fallback/roles-service
-               requestTimeout: 10000
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -83,3 +78,8 @@ resilience4j:
         permittedNumberOfCallsInHalfOpenState: 3
         failureRateThreshold: 50
         waitDurationInOpenState: 5000
+  timelimiter:
+    configs:
+      default:
+        timeoutDuration: 5s
+        cancelRunningFuture: true
