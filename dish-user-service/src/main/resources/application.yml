@@ -1,0 +1,25 @@
+#server:
+#  port: 8091
+#spring:
+#  application:
+#    name: dish-user-service
+#  profiles:
+#    active: qa
+#  cloud:
+#    config:
+#      discovery:
+#        enabled: true
+#        service-id: config-server
+#      import: configserver:
+#    openfeign:
+#      circuitbreaker:
+#        enabled: true
+#resilience4j:
+#  CircuitBreaker:
+#    configs:
+#      default:
+#        slidingWindowSize: 10
+#        minimumNumberOfCalls: 5
+#        permittedNumberOfCallsInHalfOpenState: 3
+#        failureRateThreshold: 50
+#        waitDurationInOpenState: 5000

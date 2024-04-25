@@ -1,6 +1,7 @@
 package com.dish.user.controller;
 
 import com.dish.user.response.APIResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +25,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.context.request.WebRequest;
 
 @Slf4j
 @CrossOrigin("*")
@@ -33,8 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 
     private final UserService userService;
-@Value("${application.property}")
-private String property;
+
     @Operation(summary = "Register a new user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully registered user"),
@@ -56,14 +57,11 @@ private String property;
             @ApiResponse(responseCode = "500", description = "Internal server error")
     })
     @GetMapping("/fetch/{id}")
-    public ResponseEntity<APIResponse> getUser(@PathVariable Long id) {
+    public ResponseEntity<APIResponse> getUser(@PathVariable Long id, WebRequest request, HttpServletRequest httpServletRequest) {
         log.debug("Get User By Id: {}", id);
+        log.debug(httpServletRequest.toString());
         APIResponse apiResponse = userService.getUserDetails(id);
         log.debug(UserConstants.RESPONSE_BODY, apiResponse);
         return new ResponseEntity<>(apiResponse, HttpStatus.OK);
-    }
-    @GetMapping
-    public String getProperty(){
-        return property;
     }
 }

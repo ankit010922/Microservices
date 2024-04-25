@@ -25,5 +25,4 @@ public interface RoleServiceClient {
     @Operation(summary = "Get roles by id")
     @GetMapping(value = "get-by-id")
     public ResponseEntity<APIResponse> getrolesById(@RequestParam(value = "id",required = true) Long roleId);
-    }
-
+}

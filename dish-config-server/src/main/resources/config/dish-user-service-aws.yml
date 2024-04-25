@@ -24,7 +24,6 @@ logging:
             sql:
               BasicBinder: TRACE
 server:
-  port: 0
   servlet:
     context-path: /dish/user-service
 eureka:

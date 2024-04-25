@@ -25,13 +25,8 @@ public class ApiResponse<T> {
 	private String requestId;
 	private T data;
 	@Builder.Default
+	private String systemName = "dish-roles-service";
+	@Builder.Default
 	private Long timeStamp = System.currentTimeMillis();
-
-	public static void main(String[] args) {
-	ApiResponse.builder().requestId("testid")
-
-			.build();
-
-	}
 }
 

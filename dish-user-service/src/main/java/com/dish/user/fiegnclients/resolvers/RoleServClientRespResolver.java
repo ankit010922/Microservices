@@ -13,9 +13,9 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RoleServClientRespResolver {
 
-private final RoleServiceClient roleServiceClient;
+    private final RoleServiceClient roleServiceClient;
     public Optional<Object> getRoleDto(long roleId){
-           ResponseEntity<APIResponse> response = roleServiceClient.getrolesById(roleId);
-           return Optional.ofNullable( response.getBody().getData());
+        ResponseEntity<APIResponse> response = roleServiceClient.getrolesById(roleId);
+        return Optional.ofNullable( response.getBody().getData());
     }
 }
