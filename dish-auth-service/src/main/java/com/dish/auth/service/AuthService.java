@@ -10,4 +10,6 @@ import org.springframework.validation.BindingResult;
 public interface AuthService {
 	ApiResponse saveAuth(AuthDto authDto, BindingResult bindingResult);
 
+	ApiResponse login(AuthDto authDto, BindingResult bindingResult);
+
 }

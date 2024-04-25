@@ -1,12 +1,10 @@
 package com.dish.auth.configuration;
 
-import lombok.Getter;
-import lombok.Setter;
+ 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
-import lombok.val;
 
 
 @Component
@@ -20,5 +18,11 @@ public class MessageConfig {
 
 	@Value("${auth.email.duplicate}")
 	public String emailDuplicate;
+	 
+	@Value("${invalid.Credentials}")
+	public String invalidCredentials;
+
+	@Value("${login.Successful}")
+	public String loginSuccessful;
 
 }
